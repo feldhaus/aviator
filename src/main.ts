@@ -2,10 +2,21 @@ import Game from './game';
 
 const game = new Game(window.innerWidth, window.innerHeight);
 
-window.onload = (): void => {
-  // eslint-disable-next-line no-console
-  console.log('loaded');
+const onResize = (): void => {
+  game.resize(window.innerWidth, window.innerHeight);
+};
 
+const onMove = (event: TouchEvent | MouseEvent): void => {
+  event.preventDefault();
+
+  if ('touches' in event) {
+    game.move(event.touches[0].clientX, event.touches[0].clientY);
+  } else {
+    game.move(event.clientX, event.clientY);
+  }
+};
+
+const onLoad = (): void => {
   document.body.appendChild(game.view);
   game.resize(window.innerWidth, window.innerHeight);
 
@@ -14,10 +25,11 @@ window.onload = (): void => {
     game.update();
   }
   requestAnimationFrame(animate);
+
+  window.addEventListener('resize', onResize, false);
+  window.addEventListener('orientationchange', onResize, false);
+  window.addEventListener('touchmove', onMove, false);
+  window.addEventListener('mousemove', onMove, false);
 };
 
-window.onresize = (): void => {
-  // eslint-disable-next-line no-console
-  console.log('resize', window.innerWidth, window.innerHeight);
-  game.resize(window.innerWidth, window.innerHeight);
-};
+window.addEventListener('load', onLoad, false);

@@ -7,6 +7,8 @@ import {
   WebGLRenderer,
 } from 'three';
 import AirPlane from './airplane';
+import clamp from './math/clamp';
+import lerp from './math/lerp';
 import Sea from './sea';
 import Sky from './sky';
 
@@ -14,11 +16,15 @@ export default class Game {
   private scene: Scene;
   private camera: PerspectiveCamera;
   private renderer: WebGLRenderer;
+  private width: number;
+  private height: number;
   private airplane: AirPlane;
   private sea: Sea;
   private sky: Sky;
 
   constructor(width: number, height: number) {
+    this.width = width;
+    this.height = height;
     this.createScene(width, height);
     this.createLights();
     this.createAirPlane();
@@ -47,9 +53,23 @@ export default class Game {
    * @param height
    */
   public resize(width: number, height: number): void {
+    this.width = width;
+    this.height = height;
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
     this.camera.updateProjectionMatrix();
+  }
+
+  /**
+   * Update the airplane's position.
+   * @param x
+   * @param y
+   */
+  public move(x: number, y: number): void {
+    const normalizedX = clamp(x / this.width, 0, 1);
+    const normalizedY = clamp(y / this.height, 0, 1);
+    this.airplane.mesh.position.x = lerp(-100, 100, normalizedX);
+    this.airplane.mesh.position.y = lerp(175, 25, normalizedY);
   }
 
   /**
