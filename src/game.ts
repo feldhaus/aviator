@@ -6,6 +6,7 @@ import {
   Scene,
   WebGLRenderer,
 } from 'three';
+import Sea from './sea';
 
 export default class Game {
   private scene: Scene;
@@ -15,6 +16,7 @@ export default class Game {
   constructor(width: number, height: number) {
     this.createScene(width, height);
     this.createLights();
+    this.createSea();
   }
 
   // eslint-disable-next-line no-undef
@@ -115,5 +117,14 @@ export default class Game {
     // to activate the lights, just add them to the scene
     this.scene.add(hemisphereLight);
     this.scene.add(shadowLight);
+  }
+
+  /**
+   * Create the sea.
+   */
+  private createSea(): void {
+    const sea = new Sea();
+    sea.mesh.position.y = -600;
+    this.scene.add(sea.mesh);
   }
 }
