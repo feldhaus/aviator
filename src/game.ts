@@ -6,6 +6,7 @@ import {
   Scene,
   WebGLRenderer,
 } from 'three';
+import AirPlane from './airplane';
 import Sea from './sea';
 import Sky from './sky';
 
@@ -17,6 +18,7 @@ export default class Game {
   constructor(width: number, height: number) {
     this.createScene(width, height);
     this.createLights();
+    this.createAirPlane();
     this.createSea();
     this.createSky();
   }
@@ -119,6 +121,16 @@ export default class Game {
     // to activate the lights, just add them to the scene
     this.scene.add(hemisphereLight);
     this.scene.add(shadowLight);
+  }
+
+  /**
+   * Create the air plane.
+   */
+  private createAirPlane(): void {
+    const airplane = new AirPlane();
+    airplane.mesh.scale.set(0.25, 0.25, 0.25);
+    airplane.mesh.position.y = 100;
+    this.scene.add(airplane.mesh);
   }
 
   /**
