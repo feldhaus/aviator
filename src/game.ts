@@ -14,6 +14,9 @@ export default class Game {
   private scene: Scene;
   private camera: PerspectiveCamera;
   private renderer: WebGLRenderer;
+  private airplane: AirPlane;
+  private sea: Sea;
+  private sky: Sky;
 
   constructor(width: number, height: number) {
     this.createScene(width, height);
@@ -32,6 +35,9 @@ export default class Game {
    * Render the scene.
    */
   public update(): void {
+    this.airplane.update();
+    this.sea.update();
+    this.sky.update();
     this.renderer.render(this.scene, this.camera);
   }
 
@@ -127,27 +133,27 @@ export default class Game {
    * Create the air plane.
    */
   private createAirPlane(): void {
-    const airplane = new AirPlane();
-    airplane.mesh.scale.set(0.25, 0.25, 0.25);
-    airplane.mesh.position.y = 100;
-    this.scene.add(airplane.mesh);
+    this.airplane = new AirPlane();
+    this.airplane.mesh.scale.set(0.25, 0.25, 0.25);
+    this.airplane.mesh.position.y = 100;
+    this.scene.add(this.airplane.mesh);
   }
 
   /**
    * Create the sea.
    */
   private createSea(): void {
-    const sea = new Sea();
-    sea.mesh.position.y = -600;
-    this.scene.add(sea.mesh);
+    this.sea = new Sea();
+    this.sea.mesh.position.y = -600;
+    this.scene.add(this.sea.mesh);
   }
 
   /**
    * Create the sky and clouds.
    */
   private createSky(): void {
-    const sky = new Sky();
-    sky.mesh.position.y = -600;
-    this.scene.add(sky.mesh);
+    this.sky = new Sky();
+    this.sky.mesh.position.y = -600;
+    this.scene.add(this.sky.mesh);
   }
 }

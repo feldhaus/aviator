@@ -38,4 +38,8 @@ export default class Sky {
       this.mesh.add(cloud.mesh);
     }
   }
+
+  public update(): void {
+    this.mesh.rotation.z += 0.01;
+  }
 }

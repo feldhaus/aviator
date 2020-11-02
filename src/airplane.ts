@@ -4,6 +4,7 @@ import {
 
 export default class AirPlane {
   public mesh: Object3D;
+  private propeller: Mesh;
 
   constructor() {
     this.mesh = new Object3D();
@@ -13,6 +14,10 @@ export default class AirPlane {
     this.createTail();
     this.createWing();
     this.createPropeller();
+  }
+
+  public update(): void {
+    this.propeller.rotation.x += 0.3;
   }
 
   /**
@@ -86,9 +91,9 @@ export default class AirPlane {
       color: 0x59332e,
       flatShading: true,
     });
-    const propeller = new Mesh(geomPropeller, matPropeller);
-    propeller.castShadow = true;
-    propeller.receiveShadow = true;
+    this.propeller = new Mesh(geomPropeller, matPropeller);
+    this.propeller.castShadow = true;
+    this.propeller.receiveShadow = true;
 
     const geomBlade = new BoxGeometry(1, 100, 20, 1, 1, 1);
     const matBlade = new MeshPhongMaterial({
@@ -100,8 +105,8 @@ export default class AirPlane {
     blade.position.set(8, 0, 0);
     blade.castShadow = true;
     blade.receiveShadow = true;
-    propeller.add(blade);
-    propeller.position.set(50, 0, 0);
-    this.mesh.add(propeller);
+    this.propeller.add(blade);
+    this.propeller.position.set(50, 0, 0);
+    this.mesh.add(this.propeller);
   }
 }

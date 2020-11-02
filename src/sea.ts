@@ -28,4 +28,8 @@ export default class Sea {
     // allow the sea to receive shadows
     this.mesh.receiveShadow = true;
   }
+
+  public update(): void {
+    this.mesh.rotation.z += 0.005;
+  }
 }
