@@ -1,7 +1,7 @@
 import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
 } from 'three';
-import { COLOR } from './color';
+import { COLOR } from '../color';
 
 export default class AirPlane {
   public mesh: Object3D;

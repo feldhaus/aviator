@@ -1,6 +1,6 @@
 import { Object3D } from 'three';
 import Cloud from './cloud';
-import { HALF_PI, TAU } from './utils/math';
+import { HALF_PI, TAU } from '../utils/math';
 
 export default class Sky {
   public mesh: Object3D;

@@ -6,10 +6,10 @@ import {
   Scene,
   WebGLRenderer,
 } from 'three';
-import AirPlane from './airplane';
+import AirPlane from './objects/airplane';
+import Sea from './objects/sea';
+import Sky from './objects/sky';
 import { clamp, lerp } from './utils/math';
-import Sea from './sea';
-import Sky from './sky';
 
 export default class Game {
   private scene: Scene;

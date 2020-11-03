@@ -1,8 +1,8 @@
 import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
 } from 'three';
-import { COLOR } from './color';
-import { TAU } from './utils/math';
+import { COLOR } from '../color';
+import { TAU } from '../utils/math';
 
 export default class Cloud {
   public mesh: Object3D;

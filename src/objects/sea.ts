@@ -4,8 +4,8 @@ import {
   Mesh,
   MeshPhongMaterial,
 } from 'three';
-import { COLOR } from './color';
-import { HALF_PI } from './utils/math';
+import { COLOR } from '../color';
+import { HALF_PI } from '../utils/math';
 
 export default class Sea {
   public mesh: Mesh;
