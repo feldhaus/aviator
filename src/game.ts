@@ -7,8 +7,7 @@ import {
   WebGLRenderer,
 } from 'three';
 import AirPlane from './airplane';
-import clamp from './math/clamp';
-import lerp from './math/lerp';
+import { clamp, lerp } from './utils/math';
 import Sea from './sea';
 import Sky from './sky';
 

@@ -11,6 +11,14 @@ module.exports = {
     ],
     "@typescript-eslint/comma-dangle": ["error", "always-multiline"],
     "no-plusplus": ["error", { allowForLoopAfterthoughts: true }],
-    "no-continue": "off",
+    "no-continue": "off"
   },
+  overrides: [
+    {
+      files: "./src/utils/**/*.ts",
+      rules: {
+        "import/prefer-default-export": "off"
+      }
+    } 
+  ]
 };

@@ -1,18 +1,19 @@
 import { Object3D } from 'three';
 import Cloud from './cloud';
+import { HALF_PI, TAU } from './utils/math';
 
 export default class Sky {
   public mesh: Object3D;
 
   constructor() {
-    // create an empty container
+    // create an empty container that will hold the different parts of the sky
     this.mesh = new Object3D();
 
     // choose a number of clouds to be scattered in the sky
     const nClouds = 20;
 
     // distribute the clouds consistently (place them according to a uniform angle)
-    const stepAngle = (Math.PI * 2) / nClouds;
+    const stepAngle = TAU / nClouds;
 
     // create the clouds
     for (let i = 0; i < nClouds; i++) {
@@ -25,7 +26,7 @@ export default class Sky {
       cloud.mesh.position.y = Math.sin(angle) * distance;
 
       // rotate the cloud according to its position
-      cloud.mesh.rotation.z = angle + Math.PI / 2;
+      cloud.mesh.rotation.z = angle + HALF_PI;
 
       // position the clouds at random depths inside of the scene
       cloud.mesh.position.z = -400 - Math.random() * 400;

@@ -2,6 +2,7 @@ import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
 } from 'three';
 import { COLOR } from './color';
+import { TAU } from './utils/math';
 
 export default class Cloud {
   public mesh: Object3D;
@@ -29,8 +30,8 @@ export default class Cloud {
       cube.position.x = i * 15;
       cube.position.y = Math.random() * 10;
       cube.position.z = Math.random() * 10;
-      cube.rotation.z = Math.random() * Math.PI * 2;
-      cube.rotation.y = Math.random() * Math.PI * 2;
+      cube.rotation.z = Math.random() * TAU;
+      cube.rotation.y = Math.random() * TAU;
 
       // set the size of the cube randomly
       const scale = 0.1 + Math.random() * 0.9;

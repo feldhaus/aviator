@@ -5,6 +5,7 @@ import {
   MeshPhongMaterial,
 } from 'three';
 import { COLOR } from './color';
+import { HALF_PI } from './utils/math';
 
 export default class Sea {
   public mesh: Mesh;
@@ -14,7 +15,7 @@ export default class Sea {
     const geometry = new CylinderGeometry(600, 600, 800, 40, 10);
 
     // rotate the geometry on the x axis
-    geometry.applyMatrix4(new Matrix4().makeRotationX(-Math.PI / 2));
+    geometry.applyMatrix4(new Matrix4().makeRotationX(-HALF_PI));
 
     // create the material
     const material = new MeshPhongMaterial({

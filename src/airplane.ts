@@ -8,6 +8,7 @@ export default class AirPlane {
   private propeller: Mesh;
 
   constructor() {
+    // create an empty container that will hold the different parts of the airplane
     this.mesh = new Object3D();
 
     this.createCockipt();
