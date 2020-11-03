@@ -1,6 +1,7 @@
 import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
 } from 'three';
+import { COLOR } from './color';
 
 export default class Cloud {
   public mesh: Object3D;
@@ -15,7 +16,7 @@ export default class Cloud {
 
     // create a material
     const material = new MeshPhongMaterial({
-      color: 0xd8d0d1,
+      color: COLOR.white,
     });
 
     // duplicate the geometry a random number of times

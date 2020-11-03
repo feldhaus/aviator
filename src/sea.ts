@@ -4,6 +4,7 @@ import {
   Mesh,
   MeshPhongMaterial,
 } from 'three';
+import { COLOR } from './color';
 
 export default class Sea {
   public mesh: Mesh;
@@ -17,7 +18,7 @@ export default class Sea {
 
     // create the material
     const material = new MeshPhongMaterial({
-      color: 0x68c3c0,
+      color: COLOR.blue,
       transparent: true,
       opacity: 0.6,
       flatShading: true,

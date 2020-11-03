@@ -1,6 +1,7 @@
 import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
 } from 'three';
+import { COLOR } from './color';
 
 export default class AirPlane {
   public mesh: Object3D;
@@ -9,7 +10,7 @@ export default class AirPlane {
   constructor() {
     this.mesh = new Object3D();
 
-    this.createCabin();
+    this.createCockipt();
     this.createEngine();
     this.createTail();
     this.createWing();
@@ -23,10 +24,18 @@ export default class AirPlane {
   /**
    * Create the cabin.
    */
-  private createCabin() {
+  private createCockipt() {
     const geomCockpit = new BoxGeometry(60, 50, 50, 1, 1, 1);
+    geomCockpit.vertices[4].y -= 10;
+    geomCockpit.vertices[4].z += 20;
+    geomCockpit.vertices[5].y -= 10;
+    geomCockpit.vertices[5].z -= 20;
+    geomCockpit.vertices[6].y += 30;
+    geomCockpit.vertices[6].z += 20;
+    geomCockpit.vertices[7].y += 30;
+    geomCockpit.vertices[7].z -= 20;
     const matCockpit = new MeshPhongMaterial({
-      color: 0xf25346,
+      color: COLOR.red,
       flatShading: true,
     });
     const cockpit = new Mesh(geomCockpit, matCockpit);
@@ -41,7 +50,7 @@ export default class AirPlane {
   private createEngine() {
     const geomEngine = new BoxGeometry(20, 50, 50, 1, 1, 1);
     const matEngine = new MeshPhongMaterial({
-      color: 0xd8d0d1,
+      color: COLOR.white,
       flatShading: true,
     });
     const engine = new Mesh(geomEngine, matEngine);
@@ -55,12 +64,12 @@ export default class AirPlane {
    * Create the tail.
    */
   private createTail() {
-    const geomTailPlane = new BoxGeometry(15, 20, 5, 1, 1, 1);
-    const matTailPlane = new MeshPhongMaterial({
-      color: 0xf25346,
+    const geomTail = new BoxGeometry(15, 20, 5, 1, 1, 1);
+    const matTail = new MeshPhongMaterial({
+      color: COLOR.red,
       flatShading: true,
     });
-    const tailPlane = new Mesh(geomTailPlane, matTailPlane);
+    const tailPlane = new Mesh(geomTail, matTail);
     tailPlane.position.set(-35, 25, 0);
     tailPlane.castShadow = true;
     tailPlane.receiveShadow = true;
@@ -71,12 +80,16 @@ export default class AirPlane {
    * Create the wing.
    */
   private createWing() {
-    const geomSideWing = new BoxGeometry(40, 8, 150, 1, 1, 1);
-    const matSideWing = new MeshPhongMaterial({
-      color: 0xf25346,
+    const geomWing = new BoxGeometry(40, 8, 150, 1, 1, 1);
+    geomWing.vertices[0].z = 30;
+    geomWing.vertices[2].z = 30;
+    geomWing.vertices[1].z = -30;
+    geomWing.vertices[3].z = -30;
+    const matWing = new MeshPhongMaterial({
+      color: COLOR.red,
       flatShading: true,
     });
-    const sideWing = new Mesh(geomSideWing, matSideWing);
+    const sideWing = new Mesh(geomWing, matWing);
     sideWing.castShadow = true;
     sideWing.receiveShadow = true;
     this.mesh.add(sideWing);
@@ -88,7 +101,7 @@ export default class AirPlane {
   private createPropeller() {
     const geomPropeller = new BoxGeometry(20, 10, 10, 1, 1, 1);
     const matPropeller = new MeshPhongMaterial({
-      color: 0x59332e,
+      color: COLOR.brown,
       flatShading: true,
     });
     this.propeller = new Mesh(geomPropeller, matPropeller);
@@ -97,7 +110,7 @@ export default class AirPlane {
 
     const geomBlade = new BoxGeometry(1, 100, 20, 1, 1, 1);
     const matBlade = new MeshPhongMaterial({
-      color: 0x23190f,
+      color: COLOR.brownDark,
       flatShading: true,
     });
 
