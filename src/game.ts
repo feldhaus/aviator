@@ -1,4 +1,5 @@
 import {
+  AmbientLight,
   DirectionalLight,
   Fog,
   HemisphereLight,
@@ -143,9 +144,13 @@ export default class Game {
     shadowLight.shadow.mapSize.width = 2048;
     shadowLight.shadow.mapSize.height = 2048;
 
+    // an ambient light modifies the global color of a scene and makes the shadows softer
+    const ambientLight = new AmbientLight(0xdc8874, 0.5);
+
     // to activate the lights, just add them to the scene
     this.scene.add(hemisphereLight);
     this.scene.add(shadowLight);
+    this.scene.add(ambientLight);
   }
 
   /**
