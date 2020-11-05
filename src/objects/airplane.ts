@@ -2,10 +2,12 @@ import {
   BoxGeometry, Mesh, MeshPhongMaterial, Object3D, Vector2,
 } from 'three';
 import { COLOR } from '../color';
+import Pilot from '../pilot';
 
 export default class AirPlane {
   public mesh: Object3D;
   private propeller: Mesh;
+  private pilot: Pilot;
 
   constructor() {
     // create an empty container that will hold the different parts of the airplane
@@ -15,7 +17,12 @@ export default class AirPlane {
     this.createEngine();
     this.createTail();
     this.createWing();
+    this.createWindshield();
     this.createPropeller();
+
+    this.pilot = new Pilot();
+    this.pilot.mesh.position.set(-10, 27, 0);
+    this.mesh.add(this.pilot.mesh);
   }
 
   /**
@@ -31,6 +38,8 @@ export default class AirPlane {
     this.mesh.rotation.x = (this.mesh.position.y - target.y) * 0.006;
 
     this.propeller.rotation.x += 0.3;
+
+    this.pilot.update();
   }
 
   /**
@@ -105,6 +114,25 @@ export default class AirPlane {
     sideWing.castShadow = true;
     sideWing.receiveShadow = true;
     this.mesh.add(sideWing);
+  }
+
+  /**
+   * Create the windshield.
+   */
+  private createWindshield() {
+    const geometry = new BoxGeometry(3, 15, 20, 1, 1, 1);
+    const material = new MeshPhongMaterial({
+      color: COLOR.white,
+      transparent: true,
+      opacity: 0.3,
+      flatShading: true,
+    });
+    const windshield = new Mesh(geometry, material);
+    windshield.position.set(5, 27, 0);
+    windshield.castShadow = true;
+    windshield.receiveShadow = true;
+
+    this.mesh.add(windshield);
   }
 
   /**
