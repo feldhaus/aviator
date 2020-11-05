@@ -59,7 +59,6 @@ export default class Game {
     this.height = height;
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
-    this.camera.fov = this.target.x;
     this.camera.updateProjectionMatrix();
   }
 
@@ -73,6 +72,8 @@ export default class Game {
     const normalizedY = clamp(y / this.height, 0, 1);
     this.target.x = lerp(40, 80, normalizedX);
     this.target.y = lerp(175, 25, normalizedY);
+    this.camera.fov = this.target.x;
+    this.camera.updateProjectionMatrix();
   }
 
   /**
