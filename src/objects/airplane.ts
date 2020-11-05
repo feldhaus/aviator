@@ -1,5 +1,5 @@
 import {
-  BoxGeometry, Mesh, MeshPhongMaterial, Object3D,
+  BoxGeometry, Mesh, MeshPhongMaterial, Object3D, Vector2,
 } from 'three';
 import { COLOR } from '../color';
 
@@ -18,7 +18,18 @@ export default class AirPlane {
     this.createPropeller();
   }
 
-  public update(): void {
+  /**
+   * Move the airplane vertically, rotate it, and rotate the propeller.
+   * @param target
+   */
+  public update(target: Vector2): void {
+    // move the airplane at each frame by adding a fraction of the remaining distance
+    this.mesh.position.y += (target.y - this.mesh.position.y) * 0.1;
+
+    // rotate the airplane proportionally to the remaining distance
+    this.mesh.rotation.z = (target.y - this.mesh.position.y) * 0.012;
+    this.mesh.rotation.x = (this.mesh.position.y - target.y) * 0.006;
+
     this.propeller.rotation.x += 0.3;
   }
 

@@ -5,6 +5,7 @@ import {
   HemisphereLight,
   PerspectiveCamera,
   Scene,
+  Vector2,
   WebGLRenderer,
 } from 'three';
 import AirPlane from './objects/airplane';
@@ -16,20 +17,21 @@ export default class Game {
   private scene: Scene;
   private camera: PerspectiveCamera;
   private renderer: WebGLRenderer;
-  private width: number;
-  private height: number;
+  private target: Vector2;
   private airplane: AirPlane;
   private sea: Sea;
   private sky: Sky;
 
-  constructor(width: number, height: number) {
-    this.width = width;
-    this.height = height;
+  constructor(private width: number, private height: number) {
     this.createScene(width, height);
     this.createLights();
     this.createAirPlane();
     this.createSea();
     this.createSky();
+
+    // the airplane must start in the middle
+    this.target = new Vector2();
+    this.move(width * 0.5, height * 0.5);
   }
 
   // eslint-disable-next-line no-undef
@@ -41,7 +43,7 @@ export default class Game {
    * Render the scene.
    */
   public update(): void {
-    this.airplane.update();
+    this.airplane.update(this.target);
     this.sea.update();
     this.sky.update();
     this.renderer.render(this.scene, this.camera);
@@ -57,6 +59,7 @@ export default class Game {
     this.height = height;
     this.renderer.setSize(width, height);
     this.camera.aspect = width / height;
+    this.camera.fov = this.target.x;
     this.camera.updateProjectionMatrix();
   }
 
@@ -68,8 +71,8 @@ export default class Game {
   public move(x: number, y: number): void {
     const normalizedX = clamp(x / this.width, 0, 1);
     const normalizedY = clamp(y / this.height, 0, 1);
-    this.airplane.mesh.position.x = lerp(-100, 100, normalizedX);
-    this.airplane.mesh.position.y = lerp(175, 25, normalizedY);
+    this.target.x = lerp(40, 80, normalizedX);
+    this.target.y = lerp(175, 25, normalizedY);
   }
 
   /**
