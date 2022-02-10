@@ -1,7 +1,5 @@
 import {
-  BufferGeometry,
   CylinderGeometry,
-  Geometry,
   Matrix4,
   Mesh,
   MeshPhongMaterial,
@@ -10,22 +8,15 @@ import {
 import { COLOR } from '../color';
 import { HALF_PI, TAU } from '../utils/math';
 
+const RADIAL_SEGMENTS = 40;
+const HEIGHT_SEGMENTS = 10;
+
 interface IWaveAnimationData {
-  vertex: Vector3,
+  index: number;
   position: Vector3;
   angle: number;
   amplitude: number;
   speed: number;
-}
-
-/**
- * CylinderGeometry type guards.
- * @param geometry
- */
-function isCylinderGeometry(
-  geometry: Geometry | BufferGeometry,
-): geometry is CylinderGeometry {
-  return geometry.type === 'CylinderGeometry';
 }
 
 export default class Sea {
@@ -34,13 +25,17 @@ export default class Sea {
 
   constructor() {
     // create the geometry (shape) of the cylinder
-    const geometry = new CylinderGeometry(600, 600, 800, 40, 10);
+    const geometry = new CylinderGeometry(
+      600,
+      600,
+      800,
+      RADIAL_SEGMENTS,
+      HEIGHT_SEGMENTS,
+      true,
+    );
 
     // rotate the geometry on the x axis
     geometry.applyMatrix4(new Matrix4().makeRotationX(-HALF_PI));
-
-    // ensure the continuity of the waves
-    geometry.mergeVertices();
 
     // create the material
     const material = new MeshPhongMaterial({
@@ -68,22 +63,23 @@ export default class Sea {
    * @param geometry
    */
   private defineWavesAnimationData(): void {
-    if (!isCylinderGeometry(this.mesh.geometry)) return;
+    const vertices = this.mesh.geometry.attributes.position;
+    this.waves = new Array(vertices.count);
 
-    // create an array to store new data associated to each vertex
-    this.waves = this.mesh.geometry.vertices.reduce(
-      (array: IWaveAnimationData[], vertex: Vector3) => [
-        ...array,
-        {
-          vertex,
-          position: vertex.clone(),
-          angle: Math.random() * TAU,
-          amplitude: 5 + Math.random() * 15,
-          speed: 0.016 + Math.random() * 0.032,
-        },
-      ],
-      [],
-    );
+    for (let i = 0; i < this.waves.length; i++) {
+      const vertex = new Vector3(
+        vertices.getX(i),
+        vertices.getY(i),
+        vertices.getZ(i),
+      );
+      this.waves[i] = {
+        index: i,
+        position: vertex.clone(),
+        angle: Math.random() * TAU,
+        amplitude: 5 + Math.random() * 15,
+        speed: 0.016 + Math.random() * 0.032,
+      };
+    }
   }
 
   /**
@@ -91,19 +87,30 @@ export default class Sea {
    * by giving it a speed rotation, and a distance (radius of the rotation).
    */
   private moveWaves(): void {
-    if (!isCylinderGeometry(this.mesh.geometry)) return;
-
+    let n = RADIAL_SEGMENTS;
+    const vertices = this.mesh.geometry.attributes.position;
     this.waves.forEach((data: IWaveAnimationData) => {
-      // eslint-disable-next-line no-param-reassign
-      data.vertex.x = data.position.x + Math.cos(data.angle) * data.amplitude;
-      // eslint-disable-next-line no-param-reassign
-      data.vertex.y = data.position.y + Math.sin(data.angle) * data.amplitude;
-      // eslint-disable-next-line no-param-reassign
-      data.angle += data.speed;
+      if (data.index === n) {
+        // ensure the continuity of the waves
+        n += RADIAL_SEGMENTS + 1;
+        vertices.setXY(
+          data.index,
+          vertices.getX(data.index - RADIAL_SEGMENTS),
+          vertices.getY(data.index - RADIAL_SEGMENTS),
+        );
+      } else {
+        vertices.setXY(
+          data.index,
+          data.position.x + Math.cos(data.angle) * data.amplitude,
+          data.position.y + Math.sin(data.angle) * data.amplitude,
+        );
+        // eslint-disable-next-line no-param-reassign
+        data.angle += data.speed;
+      }
     });
 
     // tell the renderer that the geometry of the sea has changed
     // three.js caches the geometries and ignores any changes
-    this.mesh.geometry.verticesNeedUpdate = true;
+    vertices.needsUpdate = true;
   }
 }

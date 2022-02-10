@@ -47,14 +47,15 @@ export default class AirPlane {
    */
   private createCockipt() {
     const geomCockpit = new BoxGeometry(60, 50, 50, 1, 1, 1);
-    geomCockpit.vertices[4].y -= 10;
-    geomCockpit.vertices[4].z += 20;
-    geomCockpit.vertices[5].y -= 10;
-    geomCockpit.vertices[5].z -= 20;
-    geomCockpit.vertices[6].y += 30;
-    geomCockpit.vertices[6].z += 20;
-    geomCockpit.vertices[7].y += 30;
-    geomCockpit.vertices[7].z -= 20;
+    const vertices = geomCockpit.attributes.position;
+    vertices.setY(4, vertices.getY(4) - 10);
+    vertices.setZ(4, vertices.getZ(4) + 20);
+    vertices.setY(5, vertices.getY(5) - 10);
+    vertices.setZ(5, vertices.getZ(5) - 20);
+    vertices.setY(6, vertices.getY(6) + 30);
+    vertices.setZ(6, vertices.getZ(6) + 20);
+    vertices.setZ(7, vertices.getZ(7) + 30);
+    vertices.setZ(7, vertices.getZ(7) - 20);
     const matCockpit = new MeshPhongMaterial({
       color: COLOR.red,
       flatShading: true,
@@ -102,10 +103,11 @@ export default class AirPlane {
    */
   private createWing() {
     const geomWing = new BoxGeometry(40, 8, 150, 1, 1, 1);
-    geomWing.vertices[0].z = 30;
-    geomWing.vertices[2].z = 30;
-    geomWing.vertices[1].z = -30;
-    geomWing.vertices[3].z = -30;
+    const vertices = geomWing.attributes.position;
+    vertices.setZ(0, 30);
+    vertices.setZ(2, 30);
+    vertices.setZ(1, -30);
+    vertices.setZ(3, -30);
     const matWing = new MeshPhongMaterial({
       color: COLOR.red,
       flatShading: true,

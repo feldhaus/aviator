@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import Game from './game';
 
 const game = new Game(window.innerWidth, window.innerHeight);
